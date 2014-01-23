@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Calculator</title>
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="foundation/css/stylesheet.css">
+    <link rel="stylesheet" href="foundation/css/foundation.min.css">
+    <link rel="stylesheet" href="foundation/css/normalize.css">
+    <script type="text/javascript" src="foundation/js/foundation.min.js"></script>
+</head>
+
+<body>
+
+<h1>Dining Plan Calculator</h1>
+<form>
+    <div id="budget-calc">
+        <div class="item">
+        <label>Today
+            <input type="text" id="date"/>
+        </label>
+        </div>
+        <label>End of Semester
+            <input type="text" id="end-sem" value="17/04/2014" readonly/>
+        </label>
+        <label>Total Value
+            <input type="text" id="value" />
+        </label>
+        <label>Days Left
+            <input type="text" id="days-left" />
+        </label>
+        <label>Remaining Cash Per Day
+            <input readonly="readonly" type="text" id="cpm" />
+        </label>
+    </div>
+</form>
+<script>
+    
+// Global Variables
+    var $Date = $('#date'),
+        $EndDate = $('#end-sem');
+        $days = $('#days-left');
+    
+// Get Todays Date
+    var fullDate = new Date();console.log(fullDate);
+    var twoDigitMonth = (fullDate.getMonth()+1)+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
+    var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+    var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();console.log(currentDate);
+    $Date.val(currentDate);
+    
+// Calculate Days Remaining
+    function parseDate(str) {
+        var mdy = str.split('/')
+        return new Date(mdy[2], mdy[1], mdy[0]-1);
+    }
+    function daydiff(first, second) {
+        return (second-first)/(1000*60*60*24)
+    }
+    $days.val(daydiff(parseDate($Date.val()), parseDate($EndDate.val())));
+    
+// Calculate Remaining Budget
+    $('#budget-calc input').change(function () {
+
+    var valueINT = parseInt($('#value').val(),10);
+    var quantINT = parseInt($('#days-left').val(), 10);
+    var math = ((valueINT/quantINT));
+    $('#cpm').val(math);
+
+});
+</script>
+</body>
+</html>
